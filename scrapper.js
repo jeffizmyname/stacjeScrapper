@@ -6,7 +6,16 @@ const fs = require("fs");
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(
-        "https://www.bazakolejowa.pl/index.php?dzial=stacje&id=13&ed=0&okno=galeria&str=-1"
+        "https://www.bazakolejowa.pl/index.php?dzial=stacje&id=-1"
+    );
+
+    if(page.url() === "https://www.bazakolejowa.pl/index.php") await browser.close()
+    const idPattern = /id=(\d+)/;
+    const match = page.url().match(idPattern);
+    const id = match[0].split("=")[1]
+
+    await page.goto(
+        `https://www.bazakolejowa.pl/index.php?dzial=stacje&id=${id}&ed=0&okno=galeria`
     );
 
     await page.waitForSelector("h2#obiektNazwa");
