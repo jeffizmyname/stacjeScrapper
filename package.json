@@ -2,7 +2,8 @@
   "name": "stacjoguesser",
   "version": "1.0.0",
   "description": "",
-  "main": "scrapper.js",
+  "main": "website.js",
+  "live": "nodemon website.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
