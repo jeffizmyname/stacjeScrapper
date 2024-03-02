@@ -5,7 +5,7 @@ getStation.addEventListener("click", function () {
         .then((response) => response.json())
         .then((data) => {
             console.log(data.imageLinks);
-
+            document.getElementById("galery").innerHTML = ""
             data.imageLinks.forEach(link => {
                 document.getElementById("galery").innerHTML += `<img src="${link}">`
             });
