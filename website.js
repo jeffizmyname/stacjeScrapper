@@ -35,8 +35,16 @@ const requestListener = async function (req, res) {
             res.write(jsFile);
             res.end();
         });
-    }
-    else {
+    } else if (req.url == '/style.css') {
+        fs.readFile('./style.css', function (err, css) {
+            if (err) {
+                res.send(500, { error: err });
+            }
+            res.writeHeader(200, { "Content-Type": "text/css" });
+            res.write(css);
+            res.end();
+        });
+    } else {
         res.writeHead(404);
         res.end('Page not found');
     }
