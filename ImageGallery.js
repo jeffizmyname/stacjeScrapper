@@ -5,6 +5,7 @@ getStation.addEventListener("click", function () {
         .then((response) => response.json())
         .then((data) => {
             console.log(data.data.imageLinks);
+            console.log(data.data.cords)
             document.getElementById("galery").innerHTML = ""
             document.getElementById("stationName").innerHTML = data.data.name
             if(data.data.imageLinks == []){

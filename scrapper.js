@@ -11,7 +11,7 @@ async function getImageLink() {
 
         if(page.url() === "https://www.bazakolejowa.pl/index.php") await browser.close()
         const idPattern = /id=(\d+)/;
-        const match = page.url().match(idPattern);
+        const match = await page.url().match(idPattern);
         const id = match[0].split("=")[1]
 
         await page.goto(
@@ -38,7 +38,40 @@ async function getImageLink() {
             return contents;
         });
 
+        await page.goto(
+            `https://www.bazakolejowa.pl/index.php?dzial=stacje&id=${id}&ed=0&okno=polozenie`
+        );
+        const waitForWindow = new Promise(resolve => page.on('popup', resolve));
+        await page.waitForSelector("button#gsvKlawisz");
+        await page.click("button#gsvKlawisz")
+        const newPage = await waitForWindow;
+        const cords = extractCoordinatesFromGoogleMapsLink(newPage.url())
+        console.log()
         console.log(textContent2);
+        await newPage.waitForNavigation({
+            waitUntil: 'networkidle0',
+        });
+        await browser.close();
+        return {name: textContent, imageLinks: textContent2, cords: cords}
+        
+};
+
+function extractCoordinatesFromGoogleMapsLink(link) {
+    const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+    const match = link.match(regex);
+    if (match) {
+        const latitude = parseFloat(match[1]);
+        const longitude = parseFloat(match[2]);
+        return { latitude, longitude };
+    } else {
+        return null; // Coordinates not found in the link
+    }
+}
+
+module.exports = { getImageLink };
+
+//addons/tempbases/thumbs/1036/1286388805-1731.jpg
+//foto/1036/1286388805-1731.jpg
 
         // textContent2.forEach((link, i) => {
         //     const imageName = `img/${i+1}.jpg` 
@@ -57,11 +90,3 @@ async function getImageLink() {
         //             console.error(`Error downloading image: ${err.message}`)
         //         });
         // });
-        await browser.close();
-        return {name: textContent, imageLinks: textContent2}
-        
-};
-
-module.exports = { getImageLink };
-//addons/tempbases/thumbs/1036/1286388805-1731.jpg
-//foto/1036/1286388805-1731.jpg
