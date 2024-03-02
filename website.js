@@ -18,9 +18,9 @@ const requestListener = async function (req, res) {
         });
     } else if (req.url === '/getImageLink') {
         try {
-            const imageLinks = await getImageLink();
+            const data = await getImageLink();
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ imageLinks }));
+            res.end(JSON.stringify({ data }));
         } catch (error) {
             console.error('Error:', error);
             res.writeHead(500);
