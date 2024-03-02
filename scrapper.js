@@ -58,7 +58,7 @@ async function getImageLink() {
         //         });
         // });
         await browser.close();
-        return textContent2
+        return {name: textContent, imageLinks: textContent2}
         
 };
 
