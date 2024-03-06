@@ -2,6 +2,7 @@ const http = require("http")
 const fs = require('fs')
 const path = require('path')
 const { getImageLink } = require('./scrapper.js');
+const { getAPIKEY } = require('./getEnv.js');
 const host = 'localhost'
 const port = 8000
 
@@ -26,8 +27,27 @@ const requestListener = async function (req, res) {
             res.writeHead(500);
             res.end('Internal Server Error');
         }
+    } else if(req.url === '/maps') {
+        try {
+            const data = await getAPIKEY();
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end({data});
+        } catch (error) {
+            console.error('Error:', error);
+            res.writeHead(500);
+            res.end('Internal Server Error');
+        }
     } else if (req.url == '/ImageGallery.js') {
         fs.readFile('./ImageGallery.js', function (err, jsFile) {
+            if (err) {
+                res.send(500, { error: err });
+            }
+            res.writeHeader(200, { "Content-Type": "text/javascript" });
+            res.write(jsFile);
+            res.end();
+        });
+    }else if (req.url == '/logic.js') {
+        fs.readFile('./logic.js', function (err, jsFile) {
             if (err) {
                 res.send(500, { error: err });
             }

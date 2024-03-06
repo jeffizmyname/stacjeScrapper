@@ -16,8 +16,15 @@
     display: grid;
     grid-template-columns: repeat(5, 200px);
     width: 60%;
+    max-height: 500px;
+    overflow-y: scroll;
 }
 
 #galery img {
     width: 200px;
+}
+
+#map {
+    width: 1000px;
+    height: 500px;
 }

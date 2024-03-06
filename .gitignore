@@ -1,3 +1,5 @@
 /img
 /node_modules
 .gitignore
+.env
+env.js
